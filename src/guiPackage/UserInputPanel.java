@@ -1,6 +1,7 @@
 package guiPackage;
 
 import java.awt.Component;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,6 +17,8 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
+import databasePackage.DatabaseConnector;
+
 /**
  * A class to construct the user input fields and panel
  * JSpinners have been used over JTextFields,
@@ -28,27 +31,28 @@ public class UserInputPanel extends JPanel{
 	private JComboBox transactionIDComboBox;
 	private JComboBox productNameComboBox;
 	private JSpinner productQuantityField;
-	private JSpinner salePriceFIeld;
+	//private JSpinner salePriceFIeld;
 	//private JSpinner totalPriceField; 
 	private JSpinner dateField;
 	private JTextField customerNameField;
 	private ArrayList<String> productNames;
 	private ArrayList<String> transactionIDs;
-	private int transactionIDCount;
+	//private int transactionIDCount;
+	private DatabaseConnector dbConn;
 		
-	public UserInputPanel(){
-				
+	public UserInputPanel(DatabaseConnector dbc) throws SQLException{
+		
+		dbConn = dbc;		
+		
 		transactionIDs = new ArrayList<String>();
 		transactionIDs.add("Select ID");
 		transactionIDs.add("New ID");
+		transactionIDs.addAll(populateTransactionIDsToComboBox());
 		
 		productNames = new ArrayList<String>();
 		productNames.add("Select Product");
-		for(int i = 0; i < 10; i++)
-		{
-			productNames.add("Product " + (i+1));
-		}
-		
+		productNames.addAll(populateProductNamesToComboBox());
+				
 		JPanel transactionIDPanel = new JPanel();
 		
 		this.add(transactionIDPanel);
@@ -89,7 +93,7 @@ public class UserInputPanel extends JPanel{
 		quantityPanel.add(productQuantityField);
 		productQuantityField.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		
-		JPanel salePricePanel = new JPanel();
+/*		JPanel salePricePanel = new JPanel();
 		this.add(salePricePanel);
 		salePricePanel.setLayout(new BoxLayout(salePricePanel, BoxLayout.Y_AXIS));
 		
@@ -99,7 +103,7 @@ public class UserInputPanel extends JPanel{
 		
 		salePriceFIeld = new JSpinner();
 		salePriceFIeld.setModel(new SpinnerNumberModel(new Double(0), new Double(0), null, new Double(1)));
-		salePricePanel.add(salePriceFIeld);
+		salePricePanel.add(salePriceFIeld);*/
 		
 		/*
 		JPanel totalPricePanel = new JPanel();
@@ -151,14 +155,25 @@ public class UserInputPanel extends JPanel{
 	/**
 	 * Create a new transaction ID, and add it to the list of current transaction IDs
 	 * @return the newly created transaction ID
+	 * @throws SQLException 
 	 */
-	public String addNewIDToTransactionIDComboBox() {
-		transactionIDCount++;
-		transactionIDs.add(Integer.toString(transactionIDCount));
-		transactionIDComboBox.setModel(new DefaultComboBoxModel(transactionIDs.toArray()));
-		return Integer.toString(transactionIDCount);
+	public void addNewIDToTransactionIDComboBox() throws SQLException {
+		ArrayList<String> transactionIDList = new ArrayList<String>();
+		transactionIDList.add("Select ID");
+		transactionIDList.add("New ID");
+		dbConn.InsertToDatabase("INSERT INTO Transaction () VALUES ()");
+		transactionIDList.addAll(populateTransactionIDsToComboBox());
+		transactionIDComboBox.setModel(new DefaultComboBoxModel(transactionIDList.toArray()));
 	}
-
+	
+	public ArrayList<String> populateProductNamesToComboBox() throws SQLException {
+		
+		return dbConn.FindProductNames("SELECT DISTINCT productName FROM Inventory");
+	}
+	
+	public ArrayList<String> populateTransactionIDsToComboBox() throws SQLException {
+		return dbConn.FindTransactionIDs("SELECT TransID FROM Transaction");
+	}
 	/**
 	 * Get the combo box which stores all of the product names
 	 * @return JComboBox containing the product names
@@ -179,9 +194,9 @@ public class UserInputPanel extends JPanel{
 	 * Get the field which contains the price per product paid
 	 * @return JSpinner containing the price per product entered
 	 */
-	public JSpinner getSalePriceField() {
+/*	public JSpinner getSalePriceField() {
 		return salePriceFIeld;
-	}
+	}*/
 
 	/*public JSpinner getTotalPriceField() {
 		return totalPriceField;

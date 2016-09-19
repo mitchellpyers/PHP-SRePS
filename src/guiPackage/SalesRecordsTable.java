@@ -24,8 +24,8 @@ public class SalesRecordsTable extends JTable{
 					
 				},
 				new String[] {
-					"Transaction ID", "Sale ID", "Product Name", "Product Quantity",
-					"Sale Price","Total Price","Date","Customer Name"
+					"Transaction ID", "Sale ID", "Product Name", "Purchase Quantity", "Product Price",
+					"Sale Price","Total Transaction Cost","Date","Customer Name"
 				}
 			){
 			@Override

@@ -3,11 +3,15 @@ package guiPackage;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+
+import databasePackage.DatabaseConnector;
+
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 
 import java.awt.Insets;
+import java.sql.SQLException;
 
 /**
  * The Main class of the SRS-SRePs application.
@@ -41,15 +45,17 @@ public class GUIMain {
 
 	/**
 	 * Create the application.
+	 * @throws SQLException 
 	 */
-	public GUIMain() {
+	public GUIMain() throws SQLException {
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws SQLException 
 	 */
-	private void initialize() {
+	private void initialize() throws SQLException {
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 1000, 300);
@@ -63,6 +69,8 @@ public class GUIMain {
 		gridBagLayout.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		frame.getContentPane().setLayout(gridBagLayout);
 		
+		DatabaseConnector dbConn = new DatabaseConnector();
+		
 		salesRecordsTable = new SalesRecordsTable();
 		
 		GridBagConstraints gbc_SalesRecordsTable = new GridBagConstraints();
@@ -74,7 +82,7 @@ public class GUIMain {
 		gbc_SalesRecordsTable.gridy = 0;
 		frame.getContentPane().add(salesRecordsTable.getSalesRecordsScrollPane(), gbc_SalesRecordsTable);
 		
-		userInputPanel = new UserInputPanel();
+		userInputPanel = new UserInputPanel(dbConn);
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.gridwidth = 3;
 		gbc_panel.fill = GridBagConstraints.BOTH;
@@ -82,7 +90,7 @@ public class GUIMain {
 		gbc_panel.gridy = 2;
 		frame.getContentPane().add(userInputPanel, gbc_panel);
 		
-		userButtonControlPanel = new UserButtonControlPanel(salesRecordsTable,userInputPanel);
+		userButtonControlPanel = new UserButtonControlPanel(salesRecordsTable,userInputPanel,dbConn);
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
 		gbc_panel_1.gridwidth = 3;
 		gbc_panel_1.insets = new Insets(0, 0, 5, 5);
