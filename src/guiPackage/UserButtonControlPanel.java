@@ -24,13 +24,17 @@ public class UserButtonControlPanel extends JPanel{
 	private UserInputPanel userInputPanel;
 	private SalesRecordsTable salesRecordsTable;
 	private DatabaseConnector dbConn;
+	private ReportGenerationPanel reportGenerationPanel;
+	private boolean visibilityFlag;
 	
-	public UserButtonControlPanel(SalesRecordsTable sRT,UserInputPanel uIP, DatabaseConnector dbc) throws SQLException{
+	public UserButtonControlPanel(SalesRecordsTable sRT,UserInputPanel uIP, DatabaseConnector dbc, ReportGenerationPanel rGP) throws SQLException{
 		
 		salesRecordsTable = sRT;
 		userInputPanel = uIP;
 		dbConn = dbc;
+		reportGenerationPanel = rGP;
 		
+		visibilityFlag = false;
 		
 		updateSalesRecordsTable();
 		
@@ -170,15 +174,14 @@ public class UserButtonControlPanel extends JPanel{
 		});
 		this.add(removeSalesRecord);
 		
-		JButton button_3 = new JButton("<Unused>");
+		JButton button_3 = new JButton("Report Generation");
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Unused
+				togglereportGenerationPanelVisibility();
 			}
 		});
 		this.add(button_3);		
 	}
-
 	
 	/**
 	 * If incorrect information has been entered into a field,
@@ -218,5 +221,10 @@ public class UserButtonControlPanel extends JPanel{
 			updatedModel.addRow(database.get(i).toArray());
 		}
 		salesRecordsTable.setModel(updatedModel);
+	}
+	
+	private void togglereportGenerationPanelVisibility(){
+		visibilityFlag = !visibilityFlag;
+		reportGenerationPanel.setVisible(visibilityFlag);
 	}
 }
