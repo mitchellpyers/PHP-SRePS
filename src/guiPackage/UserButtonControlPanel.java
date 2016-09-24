@@ -27,7 +27,8 @@ public class UserButtonControlPanel extends JPanel{
 	private ReportGenerationPanel reportGenerationPanel;
 	private boolean visibilityFlag;
 	
-	public UserButtonControlPanel(SalesRecordsTable sRT,UserInputPanel uIP, DatabaseConnector dbc, ReportGenerationPanel rGP) throws SQLException{
+	public UserButtonControlPanel(SalesRecordsTable sRT,UserInputPanel uIP, 
+			DatabaseConnector dbc, ReportGenerationPanel rGP) throws SQLException{
 		
 		salesRecordsTable = sRT;
 		userInputPanel = uIP;
@@ -50,17 +51,13 @@ public class UserButtonControlPanel extends JPanel{
 				else if(data1 == "New ID"){
 						userInputPanel.addNewIDToTransactionIDComboBox();
 						data1 = Integer.toString(dbConn.SelectLatestTransactionID("SELECT TransID FROM Transaction WHERE TransID = (SELECT max(TransID) FROM Transaction)"));
-				}
-//			    String data2 = Integer.toString(dbConn.FindCurrentSaleID("SELECT SaleID FROM Sales WHERE SaleID = (SELECT max(SaleID) FROM Sales)")+1);			    
+				}			    
 			    String data3 = (String) userInputPanel.getProductNameComboBox().getSelectedItem();
 			    if(data3 == "Select Product"){
 					incorrectInformationEntered("Product");
 					return;
 				}
 			    String data4 = Integer.toString((Integer)userInputPanel.getProductQuantityField().getValue());
-//			    String data5 = Double.toString((Double)userInputPanel.getSalePriceField().getValue());
-//			    String data6 = Double.toString((Double)userInputPanel.getSalePriceField().getValue()*
-//			    				(Integer)userInputPanel.getProductQuantityField().getValue());
 			    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			    String data7 = df.format(userInputPanel.getDateField().getValue());
 			    String data8 = userInputPanel.getCustomerNameField().getText();
@@ -79,22 +76,12 @@ public class UserButtonControlPanel extends JPanel{
 			    dbConn.UpdateToDatabase("UPDATE Transaction SET Date = '" + data7 + "' WHERE TransID = "+ data1);
 			    //Update Customer Name
 			    dbConn.UpdateToDatabase("UPDATE Transaction SET customerName = '" + data8 + "' WHERE TransID = " + data1);
-			    //REFRESH GUI
-			    //LATER TONIGHT
 			    
 			    updateSalesRecordsTable();
 			    
-//			    Object[] rowToAdd = { data1, data3, data4, data7, data8 };
-//
-//			    DefaultTableModel model = (DefaultTableModel) salesRecordsTable.getModel();
-//
-//			    model.addRow(rowToAdd);
-
 			    userInputPanel.getTransactionIDComboBox().setSelectedIndex(0);
 			    userInputPanel.getProductNameComboBox().setSelectedIndex(0);
 			    userInputPanel.getProductQuantityField().setValue(new Integer(1));
-//			    userInputPanel.getSalePriceField().setValue(new Double(0.0));
-			    //userInputPanel.getTotalPriceField().setValue(new Double(0.0));
 			    userInputPanel.getCustomerNameField().setText("");
 			    
 			    
@@ -106,48 +93,6 @@ public class UserButtonControlPanel extends JPanel{
 		}
 		});
 		this.add(addSalesRecordButton);
-		
-//		JButton editSalesRecord = new JButton("Edit");
-//		editSalesRecord.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				
-//				DefaultTableModel model = (DefaultTableModel) salesRecordsTable.getModel();
-//
-//			    int rowNumber = salesRecordsTable.getSalesRecordsTable().getSelectedRow();
-//			    if(rowNumber > -1)
-//			    {
-//			    	String data1 = "This value should not change";
-//				    String data2 = "this value should not change";		    
-//				    String data3 = (String) userInputPanel.getProductNameComboBox().getSelectedItem();
-//				    if(data3 == "Select Product"){
-//						incorrectInformationEntered("Product");
-//						return;
-//					}
-//				    String data4 = Integer.toString((Integer)userInputPanel.getProductQuantityField().getValue());
-////				    String data5 = Double.toString((Double)userInputPanel.getSalePriceField().getValue());
-////				    String data6 = Double.toString((Double)userInputPanel.getSalePriceField().getValue()*
-////		    				(Integer)userInputPanel.getProductQuantityField().getValue());
-//				    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-//				    String data7 = df.format(userInputPanel.getDateField().getValue());
-//				    String data8 = userInputPanel.getCustomerNameField().getText();
-//
-////				    Object[] rowToAdd = { data1, data2, data3, data4, data5, data6, data7, data8 };
-////
-////			    	for(int i = 2; i < model.getColumnCount(); i++)
-////				    {
-////				    	model.setValueAt(rowToAdd[i], rowNumber, i);
-////				    }
-//			    }	
-//							    
-//			    userInputPanel.getTransactionIDComboBox().setSelectedIndex(0);
-//			    userInputPanel.getProductNameComboBox().setSelectedIndex(0);
-//			    userInputPanel.getProductQuantityField().setValue(new Integer(1));
-////			    userInputPanel.getSalePriceField().setValue(new Double(0.0));
-//			    //userInputPanel.getTotalPriceField().setValue(new Double(0.0));
-//			    userInputPanel.getCustomerNameField().setText("");
-//			}
-//		});
-//		this.add(editSalesRecord);
 		
 		JButton removeSalesRecord = new JButton("Remove");
 		removeSalesRecord.addActionListener(new ActionListener() {
@@ -197,9 +142,6 @@ public class UserButtonControlPanel extends JPanel{
 	{		
 		ArrayList<ArrayList<String>> database = new ArrayList<ArrayList<String>>();
 		database = dbConn.PopulateJTable("SELECT T.TransID, S.SaleID, I.productName, S.Qty, I.sellPrice, S.salePrice, T.totalPrice, T.Date, T.customerName FROM Sales S INNER JOIN Transaction T ON S.TransID = T.TransID INNER JOIN Inventory I ON S.InvID = I.InvID ORDER BY T.TransID, S.SaleID ASC");
-		//pull all the data from database (inefficient)
-		//data order is: Trans ID, Sale ID, Product Name, Qty, Sale Price, Total Price, Date, Name
-		//2D ArrayList
 		DefaultTableModel updatedModel = new DefaultTableModel(
 				new Object[][] {
 					
@@ -226,5 +168,6 @@ public class UserButtonControlPanel extends JPanel{
 	private void togglereportGenerationPanelVisibility(){
 		visibilityFlag = !visibilityFlag;
 		reportGenerationPanel.setVisible(visibilityFlag);
+		System.out.println(reportGenerationPanel.getSize());
 	}
 }

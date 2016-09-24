@@ -59,7 +59,7 @@ public class GUIMain {
 	private void initialize() throws SQLException {
 		frame = new JFrame();
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 1000, 400);
+		frame.setBounds(100, 100, 1000, 500);
 		frame.setMinimumSize(new Dimension(800, 300));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("PHP-SRePs");
@@ -82,6 +82,7 @@ public class GUIMain {
 		gbc_SalesRecordsTable.gridy = 0;
 		frame.getContentPane().add(salesRecordsTable.getSalesRecordsScrollPane(), gbc_SalesRecordsTable);
 		
+		//userInputPanel = new UserInputPanel(null);
 		userInputPanel = new UserInputPanel(dbConn);
 		GridBagConstraints gbc_UserInputPanel = new GridBagConstraints();
 		gbc_UserInputPanel.gridwidth = 3;
@@ -90,7 +91,8 @@ public class GUIMain {
 		gbc_UserInputPanel.gridy = 2;
 		frame.getContentPane().add(userInputPanel, gbc_UserInputPanel);
 		
-		reportGenerationPanel = new ReportGenerationPanel();
+		reportGenerationPanel = new ReportGenerationPanel(userInputPanel,dbConn);
+		//userButtonControlPanel = new UserButtonControlPanel(salesRecordsTable,userInputPanel,null,reportGenerationPanel);
 		userButtonControlPanel = new UserButtonControlPanel(salesRecordsTable,userInputPanel,dbConn,reportGenerationPanel);
 		GridBagConstraints gbc_UserButtonControlPanel = new GridBagConstraints();
 		gbc_UserButtonControlPanel.gridwidth = 3;
@@ -107,6 +109,6 @@ public class GUIMain {
 		gbc_ReportGenerationPanel.gridx = 0;
 		gbc_ReportGenerationPanel.gridy = 4;
 		frame.getContentPane().add(reportGenerationPanel, gbc_ReportGenerationPanel);	
-				
+		System.out.println(reportGenerationPanel.getSize());
 	}
 }
