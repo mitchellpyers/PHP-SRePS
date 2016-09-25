@@ -45,7 +45,7 @@ public class UserButtonControlPanel extends JPanel{
 				try {
 				String data1 = (String) userInputPanel.getTransactionIDComboBox().getSelectedItem();
 				if(data1 == "Select ID"){
-					incorrectInformationEntered("Transaction ID");
+					incorrectInformationEntered("Please select a valid Transaction ID");
 					return;
 				}
 				else if(data1 == "New ID"){
@@ -54,7 +54,7 @@ public class UserButtonControlPanel extends JPanel{
 				}			    
 			    String data3 = (String) userInputPanel.getProductNameComboBox().getSelectedItem();
 			    if(data3 == "Select Product"){
-					incorrectInformationEntered("Product");
+					incorrectInformationEntered("Please select a valid Product");
 					return;
 				}
 			    String data4 = Integer.toString((Integer)userInputPanel.getProductQuantityField().getValue());
@@ -62,6 +62,9 @@ public class UserButtonControlPanel extends JPanel{
 			    String data7 = df.format(userInputPanel.getDateField().getValue());
 			    String data8 = userInputPanel.getCustomerNameField().getText();
 
+			    int currentQuantity = dbConn.FindProductQuantity("SELECT Qty FROM Inventory WHERE productName = '" + data3 + "'");
+			    
+			    if(Integer.parseInt(data4) <= currentQuantity){
 			    //ADD TO DB
 			    //Select InventoryID/ProductID/SellPrice FROM Inventory Where ProductName = ProductName
 			    ArrayList<String> inventoryQuery = dbConn.FindCurrentItemPrice("SELECT InvID, sellPrice FROM Inventory WHERE InvID = (SELECT max(InvID) FROM Inventory WHERE productName = '" + data3 + "')");
@@ -77,14 +80,17 @@ public class UserButtonControlPanel extends JPanel{
 			    //Update Customer Name
 			    dbConn.UpdateToDatabase("UPDATE Transaction SET customerName = '" + data8 + "' WHERE TransID = " + data1);
 			    
-			    updateSalesRecordsTable();
+			    dbConn.UpdateToDatabase("UPDATE Inventory SET Qty = '" + (currentQuantity - Integer.parseInt(data4)) + "' WHERE productName = " + data3);
 			    
+			    updateSalesRecordsTable();
+			    }else{
+			    	incorrectInformationEntered("There is only " + currentQuantity + " of " + data3 + ", unable to sell you " + data4 + ".");
+					return; 
+			    }
 			    userInputPanel.getTransactionIDComboBox().setSelectedIndex(0);
 			    userInputPanel.getProductNameComboBox().setSelectedIndex(0);
 			    userInputPanel.getProductQuantityField().setValue(new Integer(1));
-			    userInputPanel.getCustomerNameField().setText("");
-			    
-			    
+			    userInputPanel.getCustomerNameField().setText("");			    			    
 			}
 			catch (Exception ex) 
 			{
@@ -135,7 +141,7 @@ public class UserButtonControlPanel extends JPanel{
 	 */
 	private void incorrectInformationEntered(String fieldInformation)
 	{
-		JOptionPane.showMessageDialog(this,"Please select a valid " + fieldInformation);
+		JOptionPane.showMessageDialog(this,fieldInformation);
 	}
 	
 	private void updateSalesRecordsTable() throws SQLException

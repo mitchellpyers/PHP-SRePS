@@ -297,6 +297,25 @@ public class DatabaseConnector
 	     return database;
 	}
 	
+	public int FindProductQuantity(String sqlQuery) throws SQLException
+    {
+        System.out.println("SELECTING From Inventory: " + sqlQuery);
+        int qty = 0;
+        stmt = conn.createStatement();
+        java.sql.ResultSet rs = stmt.executeQuery(sqlQuery);
+        while(rs.next())
+        {
+            qty = rs.getInt("Qty");
+            //Display values
+            System.out.println("Product Quantity: " + qty);
+         }
+         //STEP 6: Clean-up environment
+
+         rs.close();
+         stmt.close();
+         return qty;
+    }
+	
 	public void CloseConnection() throws SQLException
 	{
 		System.out.println("Closing the Connection to the Database: " + DB_URL);
