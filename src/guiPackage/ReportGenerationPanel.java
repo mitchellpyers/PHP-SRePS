@@ -134,7 +134,10 @@ public class ReportGenerationPanel extends JPanel {
 		JButton generateMonthlyReportButton = new JButton("Generate Report");
 		generateMonthlyReportButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//
+				String popUpTitle = "Monthly Sales Report";
+			    ArrayList<String> data = new ArrayList<String>();
+			    data.add("temp");
+				JOptionPane.showMessageDialog(null,new monthlyReportPopupPanel(data),popUpTitle,JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 		generateMonthlyReportButtonPanel.add(generateMonthlyReportButton);
@@ -203,17 +206,6 @@ public class ReportGenerationPanel extends JPanel {
 		productDemandComponenets.add(productNameSelectionPanel);
 		productDemandComponenets.add(timePeriodSelectionPanel);
 		productDemandComponenets.add(generateProductDemandButtonPanel);
-	}
-	
-	private JPanel buildProductDemandPopup(){
-		JPanel popupPanel = new JPanel();		
-		
-	    popupPanel.add(new JLabel("Product 1 : X items, Y Price"));
-	    popupPanel.add(new JLabel("Product 2 : X items, Y Price"));
-	    popupPanel.add(new JLabel("Product 3 : X items, Y Price"));
-	    popupPanel.add(new JLabel("Product 4 : X items, Y Price"));
-		
-		return popupPanel;
 	}
 	
 	private void incorrectInformationEntered(String fieldInformation)

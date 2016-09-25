@@ -13,15 +13,14 @@ import javax.swing.SwingConstants;
 public class productDemandPopupPanel extends JPanel {
 
 	public productDemandPopupPanel(ArrayList<String> data) {
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		Calendar now = Calendar.getInstance();
 		int currentMonthIndex = now.get((Calendar.MONTH)) ;
 		String[] months = new String[] {"January","February","March","April","May","June",
 				"July","August","September","October","November","December"};
 		
-		JLabel title = new JLabel("Predicted demand for " + data.get(0) + " for month " + months[(currentMonthIndex + 1) & 11]);
-		this.add(title);	
+		this.add(new JLabel("Predicted demand for " + data.get(0) + " for month " + months[(currentMonthIndex + 1) & 11]));	
 		
 		this.add(new JLabel("------------------------------------------------------------------------------"));
 		this.add(new JLabel("Previous " + data.get(1) + " sales: "));		
