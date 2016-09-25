@@ -168,6 +168,5 @@ public class UserButtonControlPanel extends JPanel{
 	private void togglereportGenerationPanelVisibility(){
 		visibilityFlag = !visibilityFlag;
 		reportGenerationPanel.setVisible(visibilityFlag);
-		System.out.println(reportGenerationPanel.getSize());
 	}
 }

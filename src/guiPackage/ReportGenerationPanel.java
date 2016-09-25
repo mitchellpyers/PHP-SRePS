@@ -9,6 +9,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -131,6 +132,11 @@ public class ReportGenerationPanel extends JPanel {
 		generateMonthlyReportButtonPanel.add(verticalStrut);
 		
 		JButton generateMonthlyReportButton = new JButton("Generate Report");
+		generateMonthlyReportButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//
+			}
+		});
 		generateMonthlyReportButtonPanel.add(generateMonthlyReportButton);
 		
 		monthlyReportComponenets.add(generateMonthlyReportButtonPanel);
@@ -175,6 +181,20 @@ public class ReportGenerationPanel extends JPanel {
 		generateProductDemandButtonPanel.add(verticalStrut);
 		
 		JButton generateProductDemandButton = new JButton("Generate Report");
+		generateProductDemandButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {	
+				String popUpTitle = (String)productDemandSelectionComboBox.getSelectedItem();
+			    if(popUpTitle == "Select Product"){
+					incorrectInformationEntered("Please select a valid Product");
+					return;
+				}
+			    popUpTitle += " : " + (String)timePeriodComboBox.getSelectedItem();
+			    ArrayList<String> data = new ArrayList<String>();
+			    data.add((String)productDemandSelectionComboBox.getSelectedItem());
+			    data.add((String)timePeriodComboBox.getSelectedItem());
+				JOptionPane.showMessageDialog(null,new productDemandPopupPanel(data),popUpTitle,JOptionPane.PLAIN_MESSAGE);
+			}
+		});
 		generateProductDemandButtonPanel.add(generateProductDemandButton);
 		
 		productNameSelectionPanel.setVisible(false);
@@ -183,5 +203,21 @@ public class ReportGenerationPanel extends JPanel {
 		productDemandComponenets.add(productNameSelectionPanel);
 		productDemandComponenets.add(timePeriodSelectionPanel);
 		productDemandComponenets.add(generateProductDemandButtonPanel);
+	}
+	
+	private JPanel buildProductDemandPopup(){
+		JPanel popupPanel = new JPanel();		
+		
+	    popupPanel.add(new JLabel("Product 1 : X items, Y Price"));
+	    popupPanel.add(new JLabel("Product 2 : X items, Y Price"));
+	    popupPanel.add(new JLabel("Product 3 : X items, Y Price"));
+	    popupPanel.add(new JLabel("Product 4 : X items, Y Price"));
+		
+		return popupPanel;
+	}
+	
+	private void incorrectInformationEntered(String fieldInformation)
+	{
+		JOptionPane.showMessageDialog(this, fieldInformation);
 	}
 }

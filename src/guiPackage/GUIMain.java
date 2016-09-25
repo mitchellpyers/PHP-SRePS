@@ -109,6 +109,5 @@ public class GUIMain {
 		gbc_ReportGenerationPanel.gridx = 0;
 		gbc_ReportGenerationPanel.gridy = 4;
 		frame.getContentPane().add(reportGenerationPanel, gbc_ReportGenerationPanel);	
-		System.out.println(reportGenerationPanel.getSize());
 	}
 }
