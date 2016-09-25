@@ -2,17 +2,21 @@ package guiPackage;
 
 import javax.swing.JPanel;
 
-import java.lang.reflect.Array;
+import databasePackage.DatabaseConnector;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 public class productDemandPopupPanel extends JPanel {
 
-	public productDemandPopupPanel(ArrayList<String> data) {
+	private DatabaseConnector dbConn;
+	
+	public productDemandPopupPanel(ArrayList<String> data, DatabaseConnector dbC) {
+		this.dbConn = dbC;
+		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		Calendar now = Calendar.getInstance();
@@ -32,11 +36,11 @@ public class productDemandPopupPanel extends JPanel {
 		}
 		int[] tempData = new int[] {1,2,3,4,5,6,7,8,9,10,11,12};
 		for(int i = 0; i < n; i++){
-			JLabel tempLabel = new JLabel("        " + months[(currentMonthIndex - (n-1) + i) & 11] + " : " + tempData[i]);
+			JLabel tempLabel = new JLabel("        - " + months[(currentMonthIndex - (n-1) + i) & 11] + " : " + tempData[i] + " unit(s)");
 			this.add(tempLabel);
 		}
-		
-		this.add(new JLabel("        " + months[(currentMonthIndex + 1) & 11] + " : " + predictNextValue(tempData)));
+		this.add(new JLabel("Prediction for next month" + " : " + predictNextValue(tempData) + " unit(s)"));
+		//this.add(new JLabel("Prediction for " + months[(currentMonthIndex + 1) & 11] + " : " + predictNextValue(tempData)));
 	}
 	
 	private int predictNextValue(int[] data){

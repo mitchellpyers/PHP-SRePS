@@ -135,9 +135,11 @@ public class ReportGenerationPanel extends JPanel {
 		generateMonthlyReportButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String popUpTitle = "Monthly Sales Report";
-			    ArrayList<String> data = new ArrayList<String>();
-			    data.add("temp");
-				JOptionPane.showMessageDialog(null,new monthlyReportPopupPanel(data),popUpTitle,JOptionPane.PLAIN_MESSAGE);
+				Date monthData = (Date)monthDateField.getValue();
+				String[] months = new String[] {"January","February","March","April","May","June",
+						"July","August","September","October","November","December"};
+				String month = months[monthData.getMonth()];
+				JOptionPane.showMessageDialog(null,new monthlyReportPopupPanel(month,dbConn),popUpTitle,JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 		generateMonthlyReportButtonPanel.add(generateMonthlyReportButton);
@@ -186,16 +188,14 @@ public class ReportGenerationPanel extends JPanel {
 		JButton generateProductDemandButton = new JButton("Generate Report");
 		generateProductDemandButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
-				String popUpTitle = (String)productDemandSelectionComboBox.getSelectedItem();
-			    if(popUpTitle == "Select Product"){
+			    if((String)productDemandSelectionComboBox.getSelectedItem() == "Select Product"){
 					incorrectInformationEntered("Please select a valid Product");
 					return;
 				}
-			    popUpTitle += " : " + (String)timePeriodComboBox.getSelectedItem();
 			    ArrayList<String> data = new ArrayList<String>();
 			    data.add((String)productDemandSelectionComboBox.getSelectedItem());
 			    data.add((String)timePeriodComboBox.getSelectedItem());
-				JOptionPane.showMessageDialog(null,new productDemandPopupPanel(data),popUpTitle,JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(null,new productDemandPopupPanel(data,dbConn),"Product Demand Report",JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 		generateProductDemandButtonPanel.add(generateProductDemandButton);
