@@ -31,13 +31,10 @@ public class UserInputPanel extends JPanel{
 	private JComboBox transactionIDComboBox;
 	private JComboBox productNameComboBox;
 	private JSpinner productQuantityField;
-	//private JSpinner salePriceFIeld;
-	//private JSpinner totalPriceField; 
 	private JSpinner dateField;
 	private JTextField customerNameField;
 	private ArrayList<String> productNames;
 	private ArrayList<String> transactionIDs;
-	//private int transactionIDCount;
 	private DatabaseConnector dbConn;
 		
 	public UserInputPanel(DatabaseConnector dbc) throws SQLException{
@@ -92,32 +89,6 @@ public class UserInputPanel extends JPanel{
 		productQuantityField = new JSpinner();
 		quantityPanel.add(productQuantityField);
 		productQuantityField.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
-		
-/*		JPanel salePricePanel = new JPanel();
-		this.add(salePricePanel);
-		salePricePanel.setLayout(new BoxLayout(salePricePanel, BoxLayout.Y_AXIS));
-		
-		JLabel salePriceLabel = new JLabel("Sale Price");
-		salePriceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		salePricePanel.add(salePriceLabel);
-		
-		salePriceFIeld = new JSpinner();
-		salePriceFIeld.setModel(new SpinnerNumberModel(new Double(0), new Double(0), null, new Double(1)));
-		salePricePanel.add(salePriceFIeld);*/
-		
-		/*
-		JPanel totalPricePanel = new JPanel();
-		this.add(totalPricePanel);
-		totalPricePanel.setLayout(new BoxLayout(totalPricePanel, BoxLayout.Y_AXIS));
-		
-		JLabel totalPriceLabel = new JLabel("Total Price");
-		totalPriceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		totalPricePanel.add(totalPriceLabel);
-		
-		totalPriceField = new JSpinner();
-		totalPriceField.setModel(new SpinnerNumberModel(new Double(0), new Double(0), null, new Double(1)));
-		totalPricePanel.add(totalPriceField);
-		*/
 		
 		JPanel datePanel = new JPanel();
 		this.add(datePanel);
@@ -191,18 +162,6 @@ public class UserInputPanel extends JPanel{
 	}
 
 	/**
-	 * Get the field which contains the price per product paid
-	 * @return JSpinner containing the price per product entered
-	 */
-/*	public JSpinner getSalePriceField() {
-		return salePriceFIeld;
-	}*/
-
-	/*public JSpinner getTotalPriceField() {
-		return totalPriceField;
-	}*/
-
-	/**
 	 * Get the field containing the transaction date
 	 * @return JSpinner containing the transaction's date
 	 */
@@ -216,5 +175,9 @@ public class UserInputPanel extends JPanel{
 	 */
 	public JTextField getCustomerNameField() {
 		return customerNameField;
+	}
+	
+	public ArrayList<String> getProductNames()	{
+		return productNames;
 	}
 }

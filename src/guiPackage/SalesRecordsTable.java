@@ -36,7 +36,7 @@ public class SalesRecordsTable extends JTable{
 		};
 		
 		this.setModel(tableModel);
-		this.setPreferredScrollableViewportSize(new Dimension(400, 150));
+		this.setPreferredScrollableViewportSize(new Dimension(400, 280));
 		this.setFillsViewportHeight(true);
 		salesRecordsScrollPane = new JScrollPane(this);
 

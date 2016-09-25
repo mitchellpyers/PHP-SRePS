@@ -25,6 +25,7 @@ public class GUIMain {
 	private SalesRecordsTable salesRecordsTable;
 	private UserInputPanel userInputPanel;
 	private UserButtonControlPanel userButtonControlPanel;
+	private ReportGenerationPanel reportGenerationPanel;
 
 
 	/**
@@ -58,7 +59,7 @@ public class GUIMain {
 	private void initialize() throws SQLException {
 		frame = new JFrame();
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 1000, 300);
+		frame.setBounds(100, 100, 1000, 500);
 		frame.setMinimumSize(new Dimension(800, 300));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("PHP-SRePs");
@@ -71,8 +72,7 @@ public class GUIMain {
 		
 		DatabaseConnector dbConn = new DatabaseConnector();
 		
-		salesRecordsTable = new SalesRecordsTable();
-		
+		salesRecordsTable = new SalesRecordsTable();		
 		GridBagConstraints gbc_SalesRecordsTable = new GridBagConstraints();
 		gbc_SalesRecordsTable.anchor = GridBagConstraints.FIRST_LINE_START;
 		gbc_SalesRecordsTable.fill = GridBagConstraints.HORIZONTAL;
@@ -82,22 +82,33 @@ public class GUIMain {
 		gbc_SalesRecordsTable.gridy = 0;
 		frame.getContentPane().add(salesRecordsTable.getSalesRecordsScrollPane(), gbc_SalesRecordsTable);
 		
+		//userInputPanel = new UserInputPanel(null);
 		userInputPanel = new UserInputPanel(dbConn);
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.gridwidth = 3;
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 2;
-		frame.getContentPane().add(userInputPanel, gbc_panel);
+		GridBagConstraints gbc_UserInputPanel = new GridBagConstraints();
+		gbc_UserInputPanel.gridwidth = 3;
+		gbc_UserInputPanel.fill = GridBagConstraints.BOTH;
+		gbc_UserInputPanel.gridx = 0;
+		gbc_UserInputPanel.gridy = 2;
+		frame.getContentPane().add(userInputPanel, gbc_UserInputPanel);
 		
-		userButtonControlPanel = new UserButtonControlPanel(salesRecordsTable,userInputPanel,dbConn);
-		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-		gbc_panel_1.gridwidth = 3;
-		gbc_panel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_panel_1.fill = GridBagConstraints.BOTH;
-		gbc_panel_1.gridx = 0;
-		gbc_panel_1.gridy = 3;
-		frame.getContentPane().add(userButtonControlPanel, gbc_panel_1);	
-				
+		reportGenerationPanel = new ReportGenerationPanel(userInputPanel,dbConn);
+		//userButtonControlPanel = new UserButtonControlPanel(salesRecordsTable,userInputPanel,null,reportGenerationPanel);
+		userButtonControlPanel = new UserButtonControlPanel(salesRecordsTable,userInputPanel,dbConn,reportGenerationPanel);
+		GridBagConstraints gbc_UserButtonControlPanel = new GridBagConstraints();
+		gbc_UserButtonControlPanel.gridwidth = 3;
+		gbc_UserButtonControlPanel.insets = new Insets(0, 0, 5, 5);
+		gbc_UserButtonControlPanel.fill = GridBagConstraints.BOTH;
+		gbc_UserButtonControlPanel.gridx = 0;
+		gbc_UserButtonControlPanel.gridy = 3;
+		frame.getContentPane().add(userButtonControlPanel, gbc_UserButtonControlPanel);	
+		
+		GridBagConstraints gbc_ReportGenerationPanel = new GridBagConstraints();
+		gbc_ReportGenerationPanel.gridwidth = 3;
+		gbc_ReportGenerationPanel.insets = new Insets(0, 0, 5, 5);
+		gbc_ReportGenerationPanel.fill = GridBagConstraints.BOTH;
+		gbc_ReportGenerationPanel.gridx = 0;
+		gbc_ReportGenerationPanel.gridy = 4;
+		frame.getContentPane().add(reportGenerationPanel, gbc_ReportGenerationPanel);	
+		System.out.println(reportGenerationPanel.getSize());
 	}
 }
