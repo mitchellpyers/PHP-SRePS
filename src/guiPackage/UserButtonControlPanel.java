@@ -68,7 +68,7 @@ public class UserButtonControlPanel extends JPanel{
 			    //Insert INTO Sales
 			    int salePrice = (Integer.parseInt(inventoryQuery.get(1)) * Integer.parseInt(data4));
 			    dbConn.InsertToDatabase("INSERT INTO Sales (InvID, TransID, Qty, salePrice, Date) VALUES (" + inventoryQuery.get(0) + ", " + data1 + ", " + data4 + ", " + salePrice + ", '" + data7 + "')");
-			    //CalcTotalPrice (Data Chingus)
+			    //CalcTotalPrice
 			    int totalSalePrice = dbConn.FindTotalSaleCost("SELECT salePrice FROM Sales WHERE TransID = " + data1);
 			    //Update Total Price
 			    dbConn.UpdateToDatabase("UPDATE Transaction SET totalPrice = " + totalSalePrice + " WHERE TransID = " + data1);
