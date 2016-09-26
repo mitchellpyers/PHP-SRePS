@@ -139,7 +139,8 @@ public class ReportGenerationPanel extends JPanel {
 				String[] months = new String[] {"January","February","March","April","May","June",
 						"July","August","September","October","November","December"};
 				String month = months[monthData.getMonth()];
-				JOptionPane.showMessageDialog(null,new monthlyReportPopupPanel(month,dbConn),popUpTitle,JOptionPane.PLAIN_MESSAGE);
+				String year = Integer.toString(monthData.getYear() + 1900);
+				JOptionPane.showMessageDialog(null,new monthlyReportPopupPanel(month,year,dbConn),popUpTitle,JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 		generateMonthlyReportButtonPanel.add(generateMonthlyReportButton);
