@@ -183,35 +183,36 @@ public class productDemandPopupPanel extends JPanel {
 	}	
 	
 	private int predictNextValue(int[] data){
-		//this is broken
+		int sumX = 0;
 		int n = data.length;
-
-		double xAverage = 0;
-		for (int i = 0; i < n; i++){
-			xAverage += data[i];
+		for(int i = 1; i < n + 1; i++){
+			sumX += i;
 		}
-		xAverage = xAverage / n;
-
-		double yAverage = 0;
-		for (int i = 0; i < n; i++){
-			yAverage += i;
+		int sumY = 0;
+		for(int i = 0; i < n; i++){
+			sumY += data[i];
 		}
-		yAverage = yAverage / n;
-
-		double mDen = 0;
-		double mNum = 0;
-
-		for(int i = 0; i < n; i++)
-		{
-			mDen += (data[i] - xAverage)*(i - yAverage);
-			mNum += (data[i] - xAverage)*(i - xAverage);
+		int sumXY = 0;
+		for(int i = 0; i < n; i++){
+			sumXY += data[i] * (i+1);
 		}
-		double m = mDen / mNum;
-
-		double c = (yAverage - (m*xAverage)) / n;
-
-		double nextPrediction = m * (n + 1) + c;
-		return (int)Math.ceil(nextPrediction);
+		int sumXX = 0;
+		for(int i = 1; i < n + 1; i++){
+			sumXX += i*i;
+		}
+		int sumX_2 = sumX*sumX;
+		
+		System.out.println(sumX);
+		System.out.println(sumY);
+		System.out.println(sumXY);
+		System.out.println(sumXX);
+		System.out.println(sumX_2);
+		
+		double a = ((n*sumXY) - (sumX*sumY));
+		a = a / ((n*sumXX)-(sumX_2));
+		
+		double b = ((sumY) - (a*sumX)) / n;
+		return (int) Math.ceil((a*(n+1)) + b);			
 	}
 
 }
