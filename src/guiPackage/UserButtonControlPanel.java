@@ -82,8 +82,7 @@ public class UserButtonControlPanel extends JPanel{
 			    userInputPanel.getTransactionIDComboBox().setSelectedIndex(0);
 			    userInputPanel.getProductNameComboBox().setSelectedIndex(0);
 			    userInputPanel.getProductQuantityField().setValue(new Integer(1));
-			    userInputPanel.getCustomerNameField().setText("");
-			    
+			    userInputPanel.getCustomerNameField().setText("");			    
 			    
 			}
 			catch (Exception ex) 
