@@ -297,6 +297,47 @@ public class DatabaseConnector
 	     return database;
 	}
 	
+<<<<<<< HEAD
+=======
+	public ArrayList<ArrayList<String>> GenerateMonthlySalesReport(String sqlQuery) throws SQLException
+	{
+		System.out.println("SELECTING From ALL OF THE THINGS: " + sqlQuery);
+		ArrayList<ArrayList<String>> database = new ArrayList<ArrayList<String>>();	
+		stmt = conn.createStatement();
+		java.sql.ResultSet rs = stmt.executeQuery(sqlQuery);
+		
+		String productName;
+		String qty;
+		String sellPrice;
+		String buyPrice;
+		
+	    while(rs.next())
+	    {
+	    	ArrayList<String> databaseRecord = new ArrayList<String>();
+	    	qty = Integer.toString(rs.getInt("Qty"));
+	    	sellPrice = Integer.toString(rs.getInt("sellPrice"));
+    		productName = rs.getString("productName");
+    		buyPrice = Integer.toString(rs.getInt("buyPrice"));
+			//Display values
+    		//Too many to print
+            System.out.println("Product Name: " + productName);
+            System.out.println("Buy Price: " + buyPrice);
+            System.out.println("Sell Price: " + sellPrice);
+            System.out.println("Qty: " + qty);
+    		
+            databaseRecord.add(productName);
+            databaseRecord.add(buyPrice);
+            databaseRecord.add(sellPrice);
+            databaseRecord.add(qty);
+            database.add(databaseRecord);
+	     }
+	     //STEP 6: Clean-up environment
+	     rs.close();
+	     stmt.close();
+	     return database;
+	}
+	
+>>>>>>> gui
 	public int FindProductQuantity(String sqlQuery) throws SQLException
     {
         System.out.println("SELECTING From Inventory: " + sqlQuery);

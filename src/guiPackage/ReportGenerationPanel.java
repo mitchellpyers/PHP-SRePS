@@ -2,26 +2,19 @@ package guiPackage;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 
-import java.awt.GridBagLayout;
-
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Console;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.awt.Component;
-import java.awt.FlowLayout;
-import javax.swing.JTabbedPane;
 import javax.swing.SpinnerDateModel;
 
 import databasePackage.DatabaseConnector;
@@ -29,8 +22,14 @@ import databasePackage.DatabaseConnector;
 import javax.swing.JButton;
 import javax.swing.Box;
 
+/**
+ * A class to construct the report generation panel
+ * @author Aidan Crellin 9734996
+ */
 public class ReportGenerationPanel extends JPanel {
 
+	private static final long serialVersionUID = -924966995221686408L;
+	
 	private DatabaseConnector dbConn;
 	private UserInputPanel userInputPanel;
 	private JComboBox reportSelectionComboBox;
@@ -41,6 +40,11 @@ public class ReportGenerationPanel extends JPanel {
 	private ArrayList<JComponent> monthlyReportComponenets = new ArrayList<JComponent>();
 	private ArrayList<JComponent> productDemandComponenets = new ArrayList<JComponent>();
 	
+	/**
+	 * Initialise the Report Generation Panel
+	 * @param uIP reference to the programs UserInputPanel
+	 * @param dbC reference to the programs shared database connector
+	 */
 	public ReportGenerationPanel(UserInputPanel uIP, DatabaseConnector dbC) {
 		this.userInputPanel = uIP;
 		this.dbConn = dbC;
@@ -58,6 +62,9 @@ public class ReportGenerationPanel extends JPanel {
 		this.setVisible(false);
 	}
 	
+	/**
+	 * Generate and construct the reportTypeSelectionPanel
+	 */
 	private void reportTypeSelectionPanelInitialisation(){
 		JPanel reportSelectionPanel = new JPanel();
 		reportTypeSelectionPanel.add(reportSelectionPanel);
@@ -107,6 +114,9 @@ public class ReportGenerationPanel extends JPanel {
 		selectReportButtonPanel.add(selectReportButton);
 	}
 	
+	/**
+	 * Generate and construct the monthlyReportPanel
+	 */
 	private void monthlyReportPanelInitialisation(){
 			
 		JPanel datePanel = new JPanel();
@@ -131,11 +141,24 @@ public class ReportGenerationPanel extends JPanel {
 		generateMonthlyReportButtonPanel.add(verticalStrut);
 		
 		JButton generateMonthlyReportButton = new JButton("Generate Report");
+		generateMonthlyReportButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String popUpTitle = "Monthly Sales Report";
+				Date monthData = (Date)monthDateField.getValue();
+				String[] months = new String[] {"January","February","March","April","May","June",
+						"July","August","September","October","November","December"};
+				String month = months[monthData.getMonth()];
+				String year = Integer.toString(monthData.getYear() + 1900);
+				JOptionPane.showMessageDialog(null,new monthlyReportPopupPanel(month,year,dbConn),popUpTitle,JOptionPane.PLAIN_MESSAGE);
+			}
+		});
 		generateMonthlyReportButtonPanel.add(generateMonthlyReportButton);
 		
 		monthlyReportComponenets.add(generateMonthlyReportButtonPanel);
 	}
-	
+	/**
+	 * Generate and construct the productDemandPanel
+	 */
 	private void productDemandPanelInitialisation(){
 				
 		JPanel productNameSelectionPanel = new JPanel();
@@ -175,6 +198,18 @@ public class ReportGenerationPanel extends JPanel {
 		generateProductDemandButtonPanel.add(verticalStrut);
 		
 		JButton generateProductDemandButton = new JButton("Generate Report");
+		generateProductDemandButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {	
+			    if((String)productDemandSelectionComboBox.getSelectedItem() == "Select Product"){
+					incorrectInformationEntered("Please select a valid Product");
+					return;
+				}
+			    ArrayList<String> data = new ArrayList<String>();
+			    data.add((String)productDemandSelectionComboBox.getSelectedItem());
+			    data.add((String)timePeriodComboBox.getSelectedItem());
+				JOptionPane.showMessageDialog(null,new productDemandPopupPanel(data,dbConn),"Product Demand Report",JOptionPane.PLAIN_MESSAGE);
+			}
+		});
 		generateProductDemandButtonPanel.add(generateProductDemandButton);
 		
 		productNameSelectionPanel.setVisible(false);
@@ -183,5 +218,15 @@ public class ReportGenerationPanel extends JPanel {
 		productDemandComponenets.add(productNameSelectionPanel);
 		productDemandComponenets.add(timePeriodSelectionPanel);
 		productDemandComponenets.add(generateProductDemandButtonPanel);
+	}
+	
+	/**
+	 * If incorrect information has been entered into a field,
+	 * a option pane will pop up explaining which field has the incorrect information
+	 * @param fieldInformation the field that has incorrect information
+	 */
+	private void incorrectInformationEntered(String fieldInformation)
+	{
+		JOptionPane.showMessageDialog(this, fieldInformation);
 	}
 }
