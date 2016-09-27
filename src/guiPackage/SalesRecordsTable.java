@@ -13,9 +13,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class SalesRecordsTable extends JTable{
 
-	private JScrollPane salesRecordsScrollPane;
-	private int saleIDCount = 0;
+	private static final long serialVersionUID = -5770141088152980774L;
 	
+	private JScrollPane salesRecordsScrollPane;
+	
+	/**
+	 * Initalise the SalesRecordTable
+	 */
 	public SalesRecordsTable()
 	{
 		
@@ -28,12 +32,14 @@ public class SalesRecordsTable extends JTable{
 					"Sale Price","Total Transaction Cost","Date","Customer Name"
 				}
 			){
-			@Override
-		    public boolean isCellEditable(int row, int column) {
-		       //all cells false
-		       return false;
-		    }
-		};
+				private static final long serialVersionUID = -3876494968803592007L;
+
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					//all cells false
+					return false;
+				}
+			};
 		
 		this.setModel(tableModel);
 		this.setPreferredScrollableViewportSize(new Dimension(400, 280));
@@ -57,14 +63,4 @@ public class SalesRecordsTable extends JTable{
 	JScrollPane getSalesRecordsScrollPane() {
 		return salesRecordsScrollPane;
 	}	
-	
-	/**
-	 * Create new sales ID for the transaction being entered into the Table
-	 * @return the new Sales ID
-	 */
-	int getNewSaleID()
-	{
-		saleIDCount++;
-		return saleIDCount;
-	}
 }

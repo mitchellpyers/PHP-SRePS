@@ -82,7 +82,6 @@ public class GUIMain {
 		gbc_SalesRecordsTable.gridy = 0;
 		frame.getContentPane().add(salesRecordsTable.getSalesRecordsScrollPane(), gbc_SalesRecordsTable);
 		
-		//userInputPanel = new UserInputPanel(null);
 		userInputPanel = new UserInputPanel(dbConn);
 		GridBagConstraints gbc_UserInputPanel = new GridBagConstraints();
 		gbc_UserInputPanel.gridwidth = 3;
@@ -92,7 +91,6 @@ public class GUIMain {
 		frame.getContentPane().add(userInputPanel, gbc_UserInputPanel);
 		
 		reportGenerationPanel = new ReportGenerationPanel(userInputPanel,dbConn);
-		//userButtonControlPanel = new UserButtonControlPanel(salesRecordsTable,userInputPanel,null,reportGenerationPanel);
 		userButtonControlPanel = new UserButtonControlPanel(salesRecordsTable,userInputPanel,dbConn,reportGenerationPanel);
 		GridBagConstraints gbc_UserButtonControlPanel = new GridBagConstraints();
 		gbc_UserButtonControlPanel.gridwidth = 3;
