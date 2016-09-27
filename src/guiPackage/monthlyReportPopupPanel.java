@@ -1,5 +1,7 @@
 package guiPackage;
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -20,6 +22,7 @@ public class monthlyReportPopupPanel extends JPanel {
 	private static final long serialVersionUID = -5766454518878624676L;
 	
 	private DatabaseConnector dbConn;
+	private PrintWriter pw;
 	
 	/**
 	 * Initialise the monthly report popup
@@ -37,23 +40,38 @@ public class monthlyReportPopupPanel extends JPanel {
 						
 		ArrayList<MonthlyReportData> monthlyReportDataSet;
 		try {
+			pw = new PrintWriter(new File("monthlyReport" + month + year + ".csv"));
 			monthlyReportDataSet = getMonthlyDataFromDataBase(month,year);
 			int monthlyTotal = 0;
 			for(MonthlyReportData monthlyReportDataIterator : monthlyReportDataSet)
 			{
+				StringBuilder sb = new StringBuilder();
 				monthlyReportDataIterator.calculateItemProfit();	
 				monthlyTotal += monthlyReportDataIterator.getItemProfit();
 				this.add(new JLabel("Product Name: " + monthlyReportDataIterator.getProductName()));
+				sb.append(monthlyReportDataIterator.getProductName());
+				sb.append(',');
 				this.add(new JLabel("Buy Price: $" + monthlyReportDataIterator.getBuyPrice()));
+				sb.append(monthlyReportDataIterator.getBuyPrice());
+				sb.append(',');
 				this.add(new JLabel("Sell Price: $" + monthlyReportDataIterator.getSellPrice()));
+				sb.append(monthlyReportDataIterator.getSellPrice());
+				sb.append(',');
 				this.add(new JLabel("Quantity: " + monthlyReportDataIterator.getQuantity()));
+				sb.append(monthlyReportDataIterator.getQuantity());
+				sb.append(',');
 				this.add(new JLabel("Item Profit: $" + monthlyReportDataIterator.getItemProfit()));	
-				this.add(new JLabel("----------------------------------------------------------------"));
+				sb.append(monthlyReportDataIterator.getItemProfit());
+				sb.append('\n');
+				this.add(new JLabel("----------------------------------------------------------------"));				
+				pw.write(sb.toString());
 			}
-			this.add(new JLabel("Monthly profit: $" + monthlyTotal));	
-		} catch (SQLException e) {
+			this.add(new JLabel("Monthly profit: $" + monthlyTotal));
+			pw.write(Integer.toString(monthlyTotal));
+			pw.close();
+		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	/**
@@ -161,4 +179,8 @@ public class monthlyReportPopupPanel extends JPanel {
 		}
 		return monthlyReportDataSet;
 	}	
+	
+	private void writeToCSV(String toWrite){
+		pw.write(toWrite);
+	}
 }

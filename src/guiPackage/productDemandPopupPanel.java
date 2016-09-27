@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 import databasePackage.DatabaseConnector;
 import databasePackage.MonthlyReportData;
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,6 +23,7 @@ public class productDemandPopupPanel extends JPanel {
 	private static final long serialVersionUID = -4107019761164047058L;
 	
 	private DatabaseConnector dbConn;
+	private PrintWriter pw;
 	
 	/**
 	 * Initialise the product demand report popup
@@ -47,10 +50,11 @@ public class productDemandPopupPanel extends JPanel {
 			n = 3;
 		}else{
 			n = 12;
-		}
-		
+		}		
 		int[] monthlySales = new int[n];
 		try {
+			pw = new PrintWriter(new File(data.get(1) + "prediction" + months[(currentMonthIndex + 1) & 11] + year + data.get(0) + ".csv"));
+			StringBuilder sb = new StringBuilder();
 			for(int i = (n-1); i > -1; i--){
 				int monthIndex = 0;
 				if((currentMonthIndex - i) % 11 < 0 ){
@@ -61,6 +65,10 @@ public class productDemandPopupPanel extends JPanel {
 							+ months[monthIndex] + " " 
 							+ Integer.toString(previousYear) + " : " + temp + " unit(s)");
 						this.add(monthlyLabel);
+						sb = new StringBuilder();
+						sb.append(temp);
+						sb.append('\n');
+						pw.write(sb.toString());
 				}else{
 					monthIndex = (currentMonthIndex - i) % 11;
 					int temp = getMonthlyProductSalesFromDataBase(monthIndex+1,Integer.toString(year),data.get(0));
@@ -69,6 +77,11 @@ public class productDemandPopupPanel extends JPanel {
 							+ months[monthIndex] + " " 
 							+ Integer.toString(year) + " : "  + temp + " unit(s)");
 						this.add(monthlyLabel);
+						sb = new StringBuilder();
+						sb.append(temp);
+						sb.append('\n');
+						pw.write(sb.toString());
+						pw.flush();
 				}
 				
 			}
@@ -79,7 +92,12 @@ public class productDemandPopupPanel extends JPanel {
 			    monthlySales[monthlySales.length - i - 1] = temp;
 			}
 			this.add(new JLabel("Prediction for next month: "  + predictNextValue(monthlySales) + " unit(s)"));
-		} catch (SQLException e) {
+			sb = new StringBuilder();
+			sb.append(predictNextValue(monthlySales));
+			sb.append('\n');
+			pw.write(sb.toString());
+			pw.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
