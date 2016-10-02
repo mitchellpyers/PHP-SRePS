@@ -297,8 +297,6 @@ public class DatabaseConnector
 	     return database;
 	}
 	
-<<<<<<< HEAD
-=======
 	public ArrayList<ArrayList<String>> GenerateMonthlySalesReport(String sqlQuery) throws SQLException
 	{
 		System.out.println("SELECTING From ALL OF THE THINGS: " + sqlQuery);
@@ -337,7 +335,6 @@ public class DatabaseConnector
 	     return database;
 	}
 	
->>>>>>> gui
 	public int FindProductQuantity(String sqlQuery) throws SQLException
     {
         System.out.println("SELECTING From Inventory: " + sqlQuery);
